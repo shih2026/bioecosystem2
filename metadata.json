@@ -1,0 +1,6 @@
+{
+  "name": "多姿多樣的生態系：雲端探險家",
+  "description": "一個專為國中生設計的互動式生態系學習網頁，包含陸域與水域生態系的詳細教學、互動模擬與即時評量。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
