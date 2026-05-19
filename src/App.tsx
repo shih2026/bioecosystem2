@@ -9,6 +9,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine 
 } from 'recharts';
 import confetti from 'canvas-confetti';
+import { gradeAnswer } from './lib/gemini';
 import { cn } from '@/src/lib/utils';
 import { ECOSYSTEM_TABS, EcosystemId, EcosystemTab } from '@/src/types';
 
@@ -3527,17 +3528,8 @@ function AISummaryChallenge({ onComplete, onScore }: { onComplete: () => void, o
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/grade', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answer }),
-      });
-      const data = await response.json();
+      const data = await gradeAnswer(answer);
       
-      if (!response.ok) {
-        throw new Error(data.error || '評分失敗');
-      }
-
       setResult(data);
       setAttempts(prev => prev + 1);
       onScore?.('ai_challenge', data.score >= 60, attempts + 1);
@@ -3551,7 +3543,7 @@ function AISummaryChallenge({ onComplete, onScore }: { onComplete: () => void, o
       }
     } catch (err: any) {
       console.error('Grading failed:', err);
-      setError(err.message || '伺服器連線失敗');
+      setError(err.message || '連線失敗或 API Key 尚未設定');
     } finally {
       setLoading(false);
     }
