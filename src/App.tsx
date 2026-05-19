@@ -1334,17 +1334,17 @@ function GrasslandSection({ onComplete, onScore }: { onComplete: () => void, onS
   const isBalanced = simulationResult === '能量傳遞平衡！符合 1/10 定律的能量金字塔。';
 
   const grasslandOrganismPool = [
-    { id: 'lion', name: '獅子', img: '/assets/獅子.jpg', isGrassland: true },
-    { id: 'zebra', name: '斑馬', img: '/assets/斑馬.jpg', isGrassland: true },
-    { id: 'giraffe', name: '長頸鹿', img: '/assets/長頸鹿.jpg', isGrassland: true },
-    { id: 'warthog', name: '疣豬', img: '/assets/疣豬.jpg', isGrassland: true },
-    { id: 'hyena', name: '鬣狗', img: '/assets/鬣狗.jpg', isGrassland: true },
-    { id: 'grass_eleusine', name: '牛筋草', img: '/assets/牛筋草.jpg', isGrassland: true },
-    { id: 'acacia', name: '金合歡', img: '/assets/金合歡.jpg', isGrassland: true },
-    { id: 'camel', name: '駱駝', img: '/assets/駱駝.jpg', isGrassland: false },
-    { id: 'polarbear', name: '北極熊', img: '/assets/北極熊.jpg', isGrassland: false },
-    { id: 'whale', name: '大翅鯨', img: '/assets/大翅鯨.jpg', isGrassland: false },
-    { id: 'bird', name: '五色鳥', img: '/assets/五色鳥.jpg', isGrassland: false },
+    { id: 'lion', name: '獅子', img: './assets/獅子.jpg', isGrassland: true },
+    { id: 'zebra', name: '斑馬', img: './assets/斑馬.jpg', isGrassland: true },
+    { id: 'giraffe', name: '長頸鹿', img: './assets/長頸鹿.jpg', isGrassland: true },
+    { id: 'warthog', name: '疣豬', img: './assets/疣豬.jpg', isGrassland: true },
+    { id: 'hyena', name: '鬣狗', img: './assets/鬣狗.jpg', isGrassland: true },
+    { id: 'grass_eleusine', name: '牛筋草', img: './assets/牛筋草.jpg', isGrassland: true },
+    { id: 'acacia', name: '金合歡', img: './assets/金合歡.jpg', isGrassland: true },
+    { id: 'camel', name: '駱駝', img: './assets/駱駝.jpg', isGrassland: false },
+    { id: 'polarbear', name: '北極熊', img: './assets/北極熊.jpg', isGrassland: false },
+    { id: 'whale', name: '大翅鯨', img: './assets/大翅鯨.jpg', isGrassland: false },
+    { id: 'bird', name: '五色鳥', img: './assets/五色鳥.jpg', isGrassland: false },
   ];
 
   const shuffledGrasslandOrganisms = useMemo(() => [...grasslandOrganismPool].sort(() => Math.random() - 0.5), []);
@@ -1722,7 +1722,7 @@ function CreaturesSection({ onComplete, onScore }: { onComplete: () => void, onS
             <AnimatePresence mode="wait">
               <motion.img 
                 key={current.name}
-                src={`/assets/${encodeURIComponent(current.name)}.jpg`} 
+                src={`./assets/${encodeURIComponent(current.name)}.jpg`} 
                 alt={current.name}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -1919,7 +1919,7 @@ function WaterCreaturesSection({ onComplete, onScore }: { onComplete: () => void
             <AnimatePresence mode="wait">
               <motion.img 
                 key={current.name}
-                src={`/assets/${encodeURIComponent(current.name)}.jpg`} 
+                src={`./assets/${encodeURIComponent(current.name)}.jpg`} 
                 alt={current.name}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -2052,16 +2052,16 @@ function DesertSection({ onComplete, onScore }: { onComplete: () => void, onScor
     cactusData.leaf?.benefit === cactusOptions.leaf.correct.benefit;
 
   const desertOrganismPool = [
-    { id: 'camel', name: '駱駝', img: '/assets/駱駝.jpg', isDesert: true },
-    { id: 'snake', name: '響尾蛇', img: '/assets/響尾蛇.jpg', isDesert: true },
-    { id: 'cactus_item', name: '仙人掌', img: '/assets/仙人掌.jpg', isDesert: true },
-    { id: 'jerboa', name: '沙漠跳鼠', img: '/assets/沙漠跳鼠.jpg', isDesert: true },
-    { id: 'beetle', name: '沐霧甲蟲', img: '/assets/沐霧甲蟲.jpg', isDesert: true },
-    { id: 'desert_rose', name: '沙漠玫瑰', img: '/assets/沙漠玫瑰.jpg', isDesert: true },
-    { id: 'lion', name: '獅子', img: '/assets/獅子.jpg', isDesert: false },
-    { id: 'polarbear', name: '北極熊', img: '/assets/北極熊.jpg', isDesert: false },
-    { id: 'kingfisher', name: '翠鳥', img: '/assets/翠鳥.jpg', isDesert: false },
-    { id: 'deer', name: '台灣水鹿', img: '/assets/台灣水鹿.jpg', isDesert: false },
+    { id: 'camel', name: '駱駝', img: './assets/駱駝.jpg', isDesert: true },
+    { id: 'snake', name: '響尾蛇', img: './assets/響尾蛇.jpg', isDesert: true },
+    { id: 'cactus_item', name: '仙人掌', img: './assets/仙人掌.jpg', isDesert: true },
+    { id: 'jerboa', name: '沙漠跳鼠', img: './assets/沙漠跳鼠.jpg', isDesert: true },
+    { id: 'beetle', name: '沐霧甲蟲', img: './assets/沐霧甲蟲.jpg', isDesert: true },
+    { id: 'desert_rose', name: '沙漠玫瑰', img: './assets/沙漠玫瑰.jpg', isDesert: true },
+    { id: 'lion', name: '獅子', img: './assets/獅子.jpg', isDesert: false },
+    { id: 'polarbear', name: '北極熊', img: './assets/北極熊.jpg', isDesert: false },
+    { id: 'kingfisher', name: '翠鳥', img: './assets/翠鳥.jpg', isDesert: false },
+    { id: 'deer', name: '台灣水鹿', img: './assets/台灣水鹿.jpg', isDesert: false },
   ];
 
   const shuffledDesertOrganisms = useMemo(() => [...desertOrganismPool].sort(() => Math.random() - 0.5), []);
@@ -2315,14 +2315,14 @@ function FreshwaterSection({ onComplete, onScore }: { onComplete: () => void, on
   const [velocity, setVelocity] = useState('slow');
 
   const freshwaterOrganismPool = [
-    { id: 'carp', name: '草魚', img: '/assets/草魚.jpg', isFreshwater: true },
-    { id: 'zacco', name: '溪哥', img: '/assets/溪哥.jpg', isFreshwater: true },
-    { id: 'water_lily', name: '萍蓬草', img: '/assets/萍蓬草.jpg', isFreshwater: true },
-    { id: 'moss', name: '蘚苔', img: '/assets/蘚苔.jpg', isFreshwater: true },
-    { id: 'kingfisher', name: '翠鳥', img: '/assets/翠鳥.jpg', isFreshwater: true },
-    { id: 'mangrove', name: '水筆仔', img: '/assets/水筆仔.jpg', isFreshwater: false },
-    { id: 'fiddler_crab', name: '弧邊招潮蟹', img: '/assets/弧邊招潮蟹.jpg', isFreshwater: false },
-    { id: 'mudskipper', name: '彈塗魚', img: '/assets/彈塗魚.jpg', isFreshwater: false },
+    { id: 'carp', name: '草魚', img: './assets/草魚.jpg', isFreshwater: true },
+    { id: 'zacco', name: '溪哥', img: './assets/溪哥.jpg', isFreshwater: true },
+    { id: 'water_lily', name: '萍蓬草', img: './assets/萍蓬草.jpg', isFreshwater: true },
+    { id: 'moss', name: '蘚苔', img: './assets/蘚苔.jpg', isFreshwater: true },
+    { id: 'kingfisher', name: '翠鳥', img: './assets/翠鳥.jpg', isFreshwater: true },
+    { id: 'mangrove', name: '水筆仔', img: './assets/水筆仔.jpg', isFreshwater: false },
+    { id: 'fiddler_crab', name: '弧邊招潮蟹', img: './assets/弧邊招潮蟹.jpg', isFreshwater: false },
+    { id: 'mudskipper', name: '彈塗魚', img: './assets/彈塗魚.jpg', isFreshwater: false },
   ];
 
   const shuffledFreshwaterOrganisms = useMemo(() => [...freshwaterOrganismPool].sort(() => Math.random() - 0.5), []);
@@ -2509,14 +2509,14 @@ function EstuarySection({ onComplete, onScore }: { onComplete: () => void, onSco
   const salinity = Math.max(5, Math.round(((currentTide.height + 250) / 500) * 35));
 
   const estuaryOrganismPool = [
-    { id: 'mangrove', name: '水筆仔', img: '/assets/水筆仔.jpg', isEstuary: true },
-    { id: 'fiddler_crab', name: '弧邊招潮蟹', img: '/assets/弧邊招潮蟹.jpg', isEstuary: true },
-    { id: 'mudskipper', name: '彈塗魚', img: '/assets/彈塗魚.jpg', isEstuary: true },
-    { id: 'whale', name: '大翅鯨', img: '/assets/大翅鯨.jpg', isEstuary: false },
-    { id: 'giant_isopod', name: '大王具足蟲', img: '/assets/大王具足蟲.jpg', isEstuary: false },
-    { id: 'yellow_water_lily', name: '萍蓬草', img: '/assets/萍蓬草.jpg', isEstuary: false },
-    { id: 'zacco', name: '溪哥', img: '/assets/溪哥.jpg', isEstuary: false },
-    { id: 'moss', name: '蘚苔', img: '/assets/蘚苔.jpg', isEstuary: false },
+    { id: 'mangrove', name: '水筆仔', img: './assets/水筆仔.jpg', isEstuary: true },
+    { id: 'fiddler_crab', name: '弧邊招潮蟹', img: './assets/弧邊招潮蟹.jpg', isEstuary: true },
+    { id: 'mudskipper', name: '彈塗魚', img: './assets/彈塗魚.jpg', isEstuary: true },
+    { id: 'whale', name: '大翅鯨', img: './assets/大翅鯨.jpg', isEstuary: false },
+    { id: 'giant_isopod', name: '大王具足蟲', img: './assets/大王具足蟲.jpg', isEstuary: false },
+    { id: 'yellow_water_lily', name: '萍蓬草', img: './assets/萍蓬草.jpg', isEstuary: false },
+    { id: 'zacco', name: '溪哥', img: './assets/溪哥.jpg', isEstuary: false },
+    { id: 'moss', name: '蘚苔', img: './assets/蘚苔.jpg', isEstuary: false },
   ];
 
   const shuffledEstuaryOrganisms = useMemo(() => [...estuaryOrganismPool].sort(() => Math.random() - 0.5), []);
