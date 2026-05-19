@@ -10,8 +10,8 @@ import {
 } from 'recharts';
 import confetti from 'canvas-confetti';
 import { gradeAnswer } from './lib/gemini';
-import { cn } from '@/src/lib/utils';
-import { ECOSYSTEM_TABS, EcosystemId, EcosystemTab } from '@/src/types';
+import { cn } from './lib/utils';
+import { ECOSYSTEM_TABS, EcosystemId, EcosystemTab } from './types';
 
 // Components for different sections will be defined here or imported
 // For simplicity and coherence in this single-file request, I'll structure them within main components
@@ -879,14 +879,14 @@ function ForestSection({ onComplete, onScore }: { onComplete: () => void, onScor
                          traits.text_low === 'evergreen' && traits.img_low === 'broad';
 
   const forestOrganismPool = [
-    { id: 'bird', name: '五色鳥', img: '/assets/五色鳥.jpg', isForest: true },
-    { id: 'deer', name: '台灣水鹿', img: '/assets/台灣水鹿.jpg', isForest: true },
-    { id: 'pangolin', name: '穿山甲', img: '/assets/穿山甲.jpg', isForest: true },
-    { id: 'cactus', name: '仙人掌', img: '/assets/仙人掌.jpg', isForest: false },
-    { id: 'polarbear', name: '北極熊', img: '/assets/北極熊.jpg', isForest: false },
-    { id: 'lion', name: '獅子', img: '/assets/獅子.jpg', isForest: false },
-    { id: 'zebra', name: '斑馬', img: '/assets/斑馬.jpg', isForest: false },
-    { id: 'mudskipper', name: '彈塗魚', img: '/assets/彈塗魚.jpg', isForest: false },
+    { id: 'bird', name: '五色鳥', img: './assets/五色鳥.jpg', isForest: true },
+    { id: 'deer', name: '台灣水鹿', img: './assets/台灣水鹿.jpg', isForest: true },
+    { id: 'pangolin', name: '穿山甲', img: './assets/穿山甲.jpg', isForest: true },
+    { id: 'cactus', name: '仙人掌', img: './assets/仙人掌.jpg', isForest: false },
+    { id: 'polarbear', name: '北極熊', img: './assets/北極熊.jpg', isForest: false },
+    { id: 'lion', name: '獅子', img: './assets/獅子.jpg', isForest: false },
+    { id: 'zebra', name: '斑馬', img: './assets/斑馬.jpg', isForest: false },
+    { id: 'mudskipper', name: '彈塗魚', img: './assets/彈塗魚.jpg', isForest: false },
   ];
 
   const shuffledOrganisms = useMemo(() => [...forestOrganismPool].sort(() => Math.random() - 0.5), []);
