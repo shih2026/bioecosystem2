@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Compass, Map, Snowflake, Trees, Wheat, Sun, Droplets, Waves, BarChart2, Trophy, 
   Lock, CheckCircle2, ChevronRight, AlertCircle, Info, Wind, Thermometer, MapPin,
-  Bird, Zap, Anchor, Ship, HelpCircle, Loader2, ArrowRight, ArrowLeft
+  Bird, Zap, Anchor, Ship, HelpCircle, Loader2, ArrowRight, ArrowLeft, X, ArrowDown
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine 
@@ -70,18 +70,35 @@ export default function App() {
     const currentIndex = ECOSYSTEM_TABS.findIndex(t => t.id === currentId);
     if (currentIndex < ECOSYSTEM_TABS.length - 1) {
       const nextId = ECOSYSTEM_TABS[currentIndex + 1].id;
+      
+      // Special logic: if 'final' is completed, unlock the rest 4 tabs (ai-challenge, submit, creature-challenge, ecosystem-challenge)
+      if (currentId === 'final') {
+        const lastFourIds: EcosystemId[] = ['ai-challenge', 'submit', 'creature-challenge', 'ecosystem-challenge'];
+        const newUnlocks = lastFourIds.filter(id => !unlockedTabs.includes(id));
+        
+        if (newUnlocks.length > 0) {
+          setUnlockedTabs(prev => [...prev, ...newUnlocks]);
+          triggerUnlockEffects('ai-challenge');
+        }
+        return;
+      }
+
       if (!unlockedTabs.includes(nextId)) {
         setUnlockedTabs(prev => [...prev, nextId]);
-        setShowUnlockAnim(nextId);
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#10b981', '#3b82f6', '#f59e0b']
-        });
-        setTimeout(() => setShowUnlockAnim(null), 3000);
+        triggerUnlockEffects(nextId);
       }
     }
+  };
+
+  const triggerUnlockEffects = (id: EcosystemId) => {
+    setShowUnlockAnim(id);
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#10b981', '#3b82f6', '#f59e0b']
+    });
+    setTimeout(() => setShowUnlockAnim(null), 3000);
   };
 
   const progressPercentage = (unlockedTabs.length / ECOSYSTEM_TABS.length) * 100;
@@ -443,17 +460,19 @@ function HomeSection({ onComplete, onScore }: { onComplete: () => void, onScore?
             />
           </div>
         </div>
-        <div className="hidden md:flex justify-center">
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-              className="relative w-64 h-64"
-            >
-              <div className="absolute inset-0 rounded-full border-4 border-dashed border-blue-200" />
-              <div className="absolute inset-4 rounded-full bg-blue-50 flex items-center justify-center">
-                <Compass size={64} className="text-blue-500" />
-              </div>
-            </motion.div>
+        <div className="hidden md:flex justify-center items-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+          >
+            <img 
+              src="./assets/地球上的生態系.jpeg" 
+              alt="地球上的生態系" 
+              className="w-full max-w-lg object-contain"
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
         </div>
       </div>
 
@@ -1444,6 +1463,26 @@ function ForestSection({ onComplete, onScore }: { onComplete: () => void, onScor
       </div>
 
 
+      {/* YouTube Video Section for Forest */}
+      <div className="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 mt-12 overflow-hidden shadow-sm">
+        <h3 className="text-2xl font-black text-emerald-800 mb-4 flex items-center gap-2">
+          <Info size={24} className="text-emerald-500" /> 森林生態系：探索延伸
+        </h3>
+        <div className="mb-6">
+          <p className="text-emerald-900 font-bold text-lg mb-1">101環境教室：雨林《國家地理》雜誌</p>
+          <p className="text-emerald-700 font-medium">若你完成所有內容，可以回來觀看此段影片。</p>
+        </div>
+        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+          <iframe 
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/OTRVNeOeA4s" 
+            title="101環境教室：雨林《國家地理》雜誌" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
+
       {isForest && isCorrectBlanks && isCorrectTraits && isTaiwanCorrect && isOrganismTaskCorrect && <CompleteButton onClick={onComplete} />}
     </div>
   );
@@ -1800,6 +1839,25 @@ function GrasslandSection({ onComplete, onScore }: { onComplete: () => void, onS
         </div>
       </div>
 
+      {/* YouTube Video Section for Grassland */}
+      <div className="bg-lime-50 p-8 rounded-3xl border border-lime-100 mt-12 overflow-hidden shadow-sm">
+        <h3 className="text-2xl font-black text-lime-800 mb-4 flex items-center gap-2">
+          <Info size={24} className="text-lime-500" /> 草原生態系：探索延伸
+        </h3>
+        <div className="mb-6">
+          <p className="text-lime-900 font-bold text-lg mb-1">獅子王中的動物圖鑑</p>
+          <p className="text-lime-700 font-medium">若你完成所有內容，可以回來觀看此段影片。</p>
+        </div>
+        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+          <iframe 
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/uYFOvLfS5FA" 
+            title="草原生態系" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
 
       {isBalanced && isChainCorrect && isCorrectBlanks && isGrasslandOrganismTaskCorrect && <CompleteButton onClick={onComplete} />}
     </div>
@@ -2504,6 +2562,26 @@ function DesertSection({ onComplete, onScore }: { onComplete: () => void, onScor
         </div>
       </div>
 
+      {/* YouTube Video Section for Desert */}
+      <div className="bg-orange-50 p-8 rounded-3xl border border-orange-100 mt-12 overflow-hidden shadow-sm">
+        <h3 className="text-2xl font-black text-orange-800 mb-4 flex items-center gap-2">
+          <Info size={24} className="text-orange-500" /> 沙漠生態系：探索延伸
+        </h3>
+        <div className="mb-6">
+          <p className="text-orange-900 font-bold text-lg mb-1">適應沙漠環境的動物是如何做到的？| 奇怪動物紀錄片</p>
+          <p className="text-orange-700 font-medium">若你完成所有內容，可以回來觀看此段影片。</p>
+        </div>
+        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+          <iframe 
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/zVZ3k0rnbYw" 
+            title="沙漠生態系" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
+
       {isDoneRemoving && isCorrectBlanks && isCorrectTraits && isCactusCorrect && isDesertOrganismTaskCorrect && <CompleteButton onClick={onComplete} />}
     </div>
   );
@@ -2946,6 +3024,27 @@ function EstuarySection({ onComplete, onScore }: { onComplete: () => void, onSco
   const [selectedEstuaryOrganisms, setSelectedEstuaryOrganisms] = useState<string[]>([]);
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(1);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
+  const [adaptationAnswers, setAdaptationAnswers] = useState<Record<string, string>>({});
+  const [showExplanation, setShowExplanation] = useState<string | null>(null);
+  
+  const adaptationStructures = ["支持根", "胎生苗", "氣生根", "板根"];
+  const adaptationAdvantages = [
+    "增加支撐力，防止傾倒",
+    "避免被潮水沖走，下落即定植",
+    "輔助呼吸作用",
+    "儲存更多的營養"
+  ];
+
+  const handleAdaptationScore = (key: string, val: string) => {
+    const correct: Record<string, string> = { 
+      'roots_s': "支持根", 
+      'roots_a': "增加支撐力，防止傾倒", 
+      'seeds_s': "胎生苗",
+      'seeds_a': "避免被潮水沖走，下落即定植"
+    };
+    onScore?.(`estuary_adaptation_${key}`, val === correct[key]);
+    setAdaptationAnswers(p => ({ ...p, [key]: val }));
+  };
 
   const tideData = [
     { time: '06:15', height: -125, type: '退潮' },
@@ -2993,17 +3092,23 @@ function EstuarySection({ onComplete, onScore }: { onComplete: () => void, onSco
   }, [selectedEstuaryOrganisms]);
 
   const handlePlaceInChain = (name: string, pos: string) => {
-    const correctAnswers: Record<string, string> = { '1': '水筆仔', '2': '弧邊招潮蟹', '3': '彈塗魚' };
+    const correctAnswers: Record<string, string> = { '1': '有機碎屑', '2': '弧邊招潮蟹', '3': '彈塗魚' };
     onScore?.(`estuary_chain_${pos}`, name === correctAnswers[pos]);
     setPlacedChain(p => ({ ...p, [pos]: name }));
   };
 
   const isCorrectBlanks = Object.keys(blanks).length === 3;
-  const isCorrectChain = placedChain['1'] === '水筆仔' && placedChain['2'] === '弧邊招潮蟹' && placedChain['3'] === '彈塗魚';
+  const isCorrectChain = placedChain['1'] === '有機碎屑' && placedChain['2'] === '弧邊招潮蟹' && placedChain['3'] === '彈塗魚';
   
   const isQuizCorrect = quizAnswers.time === '11:20' && 
                        quizAnswers.tide === '滿潮' && 
                        quizAnswers.feature === '隨漲退潮劇烈變化';
+  
+  const isAdaptationCorrect = 
+    adaptationAnswers.roots_s === "支持根" && 
+    adaptationAnswers.roots_a === "增加支撐力，防止傾倒" &&
+    adaptationAnswers.seeds_s === "胎生苗" && 
+    adaptationAnswers.seeds_a === "避免被潮水沖走，下落即定植";
 
   return (
     <div className="space-y-8">
@@ -3195,88 +3300,294 @@ function EstuarySection({ onComplete, onScore }: { onComplete: () => void, onSco
           </div>
         </div>
 
-        {/* Section 2: Features and Food Chain - Full Width Horizontal Split */}
+        {/* Section 2: Ecological Features - Standalone Block */}
         <div className="bg-teal-900 text-white p-10 rounded-3xl border border-teal-800 shadow-xl overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-teal-400 opacity-5 blur-3xl -mr-32 -mt-32" />
-          
-          <div className="grid lg:grid-cols-2 gap-12 relative z-10">
-            {/* Left side: Ecological Features */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold flex items-center gap-2 mb-2">
-                   <Info className="text-teal-400" /> 河口生態環境特色
-                </h3>
-                <p className="text-teal-100/60 text-sm">Estuary Biological Environments & Dynamics</p>
-              </div>
-
-              <div className="grid gap-6">
-                 <div className="flex gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                    <div className="bg-teal-400/20 p-3 rounded-xl shrink-0 h-fit"><Droplets className="text-teal-300" size={24} /></div>
-                    <div>
-                       <p className="text-lg font-bold text-teal-200 mb-1">劇烈變化的棲地</p>
-                       <p className="text-teal-100/70">受潮汐影響，此區生物必須能忍受鹽度在短時間內的極端漲跌，以及水位高低的頻繁交替。</p>
-                    </div>
-                 </div>
-                 <div className="flex gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                    <div className="bg-teal-400/20 p-3 rounded-xl shrink-0 h-fit"><Zap className="text-teal-300" size={24} /></div>
-                    <div>
-                       <p className="text-lg font-bold text-teal-200 mb-1">豐富的生命能量源</p>
-                       <p className="text-teal-100/70">河川攔截來自上游的有機物質，在此堆積形成豐富的「有機碎屑」，成為生產力的基礎。</p>
-                    </div>
-                 </div>
-                 <div className="flex gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                    <div className="bg-teal-400/20 p-3 rounded-xl shrink-0 h-fit"><Bird className="text-teal-300" size={24} /></div>
-                    <div>
-                       <p className="text-lg font-bold text-teal-200 mb-1">幼生生物的避風港</p>
-                       <p className="text-teal-100/70">茂密的紅樹林根系提供了絕佳的隱蔽場所與豐沛食物，是沿海魚類與節肢動物的育幼室。</p>
-                    </div>
-                 </div>
-              </div>
+          <div className="relative z-10">
+            <div>
+              <h3 className="text-3xl font-black flex items-center gap-3 mb-4 text-white">
+                 <Info className="text-teal-400" size={32} /> 河口生態環境特色
+              </h3>
+              <p className="text-teal-100/60 text-base font-bold tracking-widest mb-8">ESTUARINE ENVIRONMENTAL CHARACTERISTICS</p>
             </div>
 
-            {/* Right side: Food Chain Mission */}
-            <div className="bg-white/5 p-8 rounded-3xl border border-white/10 flex flex-col justify-center">
-               <div className="text-center mb-8">
-                 <h4 className="text-xl font-bold text-teal-300 mb-2">任務：重建紅樹林食物鏈</h4>
-                 <p className="text-teal-100/50 text-sm">請將生物名稱拖曳或點選對應位置進行排序</p>
+            <div className="grid md:grid-cols-3 gap-8">
+               <div className="flex flex-col gap-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-105 group">
+                  <div className="bg-teal-400/20 p-4 rounded-2xl shrink-0 w-fit group-hover:bg-teal-400 group-hover:text-teal-950 transition-colors">
+                    <Droplets size={32} />
+                  </div>
+                  <div>
+                     <p className="text-xl font-black text-teal-200 mb-2">劇烈變化的棲地</p>
+                     <p className="text-teal-100/70 text-lg leading-relaxed">此區生物必須能忍受鹽度在短時間內的極端漲跌，以及水位高低的頻繁交替。</p>
+                  </div>
                </div>
-
-               <div className="flex gap-4 justify-center mb-10">
-                  {['1', '2', '3'].map(pos => (
-                    <div key={pos} className="flex flex-col items-center gap-2">
-                      <div className="bg-white/10 w-28 h-16 rounded-xl border border-dashed border-teal-400/50 flex items-center justify-center text-sm font-bold text-teal-200 shadow-inner">
-                        {placedChain[pos] || pos}
-                      </div>
-                      <span className="text-[10px] uppercase tracking-widest text-teal-500 font-bold">層級 {pos}</span>
-                    </div>
-                  ))}
+               <div className="flex flex-col gap-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-105 group">
+                  <div className="bg-teal-400/20 p-4 rounded-2xl shrink-0 w-fit group-hover:bg-teal-400 group-hover:text-teal-950 transition-colors">
+                    <Zap size={32} />
+                  </div>
+                  <div>
+                     <p className="text-xl font-black text-teal-200 mb-2">豐富的生命能量源</p>
+                     <p className="text-teal-100/70 text-lg leading-relaxed">河川攔截來自上游的有機物質，在此堆積形成豐富的「有機碎屑」，成為生產力的基礎。</p>
+                  </div>
                </div>
-
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {['水筆仔', '弧邊招潮蟹', '彈塗魚'].map(creature => (
-                    <div key={creature} className="bg-white/5 p-4 rounded-2xl border border-white/5 flex flex-col items-center gap-3">
-                      <span className="text-sm font-black text-teal-100">{creature}</span>
-                      <div className="flex gap-2 w-full">
-                        {['1', '2', '3'].map(p => (
-                          <button
-                            key={p}
-                            onClick={() => handlePlaceInChain(creature, p)}
-                            className={cn(
-                              "flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all border",
-                              placedChain[p] === creature 
-                                ? "bg-teal-400 border-teal-400 text-teal-950 scale-110 shadow-md ring-2 ring-teal-400/30" 
-                                : "bg-white/10 border-white/20 hover:bg-white/20 hover:border-teal-400/50 text-white"
-                            )}
-                          >
-                            P{p}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+               <div className="flex flex-col gap-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-105 group">
+                  <div className="bg-teal-400/20 p-4 rounded-2xl shrink-0 w-fit group-hover:bg-teal-400 group-hover:text-teal-950 transition-colors">
+                    <Bird size={32} />
+                  </div>
+                  <div>
+                     <p className="text-xl font-black text-teal-200 mb-2">幼生生物的避風港</p>
+                     <p className="text-teal-100/70 text-lg leading-relaxed">茂密的紅樹林根系提供了絕佳的隱蔽場所與豐沛食物，是沿海魚類與節肢動物的育幼室。</p>
+                  </div>
                </div>
             </div>
           </div>
+        </div>
+
+        {/* Section 3: Kandelia obovata Adaptation - Standalone Block */}
+        <div className="bg-slate-900 text-white p-10 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden relative">
+           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-teal-400 to-transparent opacity-30" />
+           
+           <div className="flex flex-col lg:flex-row gap-12">
+             {/* Left side: Interactive Image */}
+             <div className="lg:w-1/2 flex flex-col">
+                <div className="mb-8">
+                   <h3 className="text-3xl font-black flex items-center gap-3 text-white">
+                      <Trees className="text-teal-400" size={32} /> 水筆仔的生存挑戰
+                   </h3>
+                   <p className="text-teal-300/60 font-bold tracking-widest mt-1">STRUCTURAL ADAPTATIONS & SURVIVAL STRATEGY</p>
+                </div>
+
+                <div className="relative flex-1 rounded-3xl border-4 border-teal-500/30 overflow-hidden shadow-2xl bg-teal-950/40 aspect-[3/4] max-h-[700px] mx-auto lg:mx-0">
+                  <img src="./assets/水筆仔支持根胎生苗.jpeg" alt="水筆仔示意圖" className="w-full h-full object-cover opacity-90" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-teal-950 via-transparent to-transparent opacity-60" />
+                  
+                  {/* Interactive Hotspots */}
+                  <div className="absolute inset-0">
+                     <button 
+                       onClick={() => setShowExplanation('roots')}
+                       className="absolute bottom-[20%] left-1/3 bg-white/90 hover:bg-teal-400 text-teal-950 px-6 py-3 rounded-full text-base font-black shadow-xl transition-all hover:scale-110 active:scale-95 flex items-center gap-2"
+                     >
+                       <HelpCircle size={20} /> 觀察支持根
+                     </button>
+                     <button 
+                       onClick={() => setShowExplanation('seeds')}
+                       className="absolute top-[30%] right-1/4 bg-white/90 hover:bg-teal-400 text-teal-950 px-6 py-3 rounded-full text-base font-black shadow-xl transition-all hover:scale-110 active:scale-95 flex items-center gap-2"
+                     >
+                       <HelpCircle size={20} /> 觀察胎生苗
+                     </button>
+                  </div>
+
+                  {/* Square Explanation Panel */}
+                  <AnimatePresence>
+                    {showExplanation && (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="absolute inset-0 flex items-center justify-center p-8 z-20 pointer-events-none"
+                      >
+                         <div className="bg-teal-950/95 w-full aspect-square max-w-[320px] rounded-2xl border-2 border-teal-400/50 p-8 shadow-2xl pointer-events-auto relative flex flex-col justify-center">
+                            <button onClick={() => setShowExplanation(null)} className="absolute top-4 right-4 text-teal-300 hover:text-white transition-colors bg-white/10 p-1 rounded-full">
+                              <X size={24} />
+                            </button>
+                            <div className="text-center space-y-6">
+                               <div className="mx-auto w-20 h-20 bg-teal-400/20 rounded-full flex items-center justify-center">
+                                  {showExplanation === 'roots' ? <Anchor className="text-teal-400" size={40} /> : <Trees className="text-teal-400" size={40} />}
+                               </div>
+                               <div>
+                                 <h5 className="font-black text-2xl text-teal-100 italic mb-2">
+                                   {showExplanation === 'roots' ? "支持根" : "胎生苗"}
+                                 </h5>
+                                 <p className="text-lg text-teal-50/90 leading-relaxed font-medium">
+                                   {showExplanation === 'roots' 
+                                     ? "分布於地表底部，放射狀撐開，防止因軟泥不穩而隨時傾斜。" 
+                                     : "種子在母體上發芽，發育成筆狀胚莖，具備重力下墜直接定植的優勢。"}
+                                 </p>
+                               </div>
+                            </div>
+                         </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+             </div>
+
+             {/* Right side: Dual Selection Quiz */}
+             <div className="lg:w-1/2 flex flex-col justify-center space-y-12">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 px-6 py-2 rounded-full text-base font-black border border-rose-500/30 shadow-lg">
+                    <AlertCircle size={20} /> 生存課題一：河口鬆軟淤泥
+                  </div>
+                  <h4 className="text-3xl font-black text-white leading-tight">任務：選擇對應的生存構造與優勢</h4>
+                  
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                       <p className="text-base font-bold text-teal-400 uppercase tracking-widest flex items-center gap-2">
+                         <div className="w-1.5 h-4 bg-teal-400 rounded-full" /> 步驟 1：選擇對應構造
+                       </p>
+                       <div className="flex flex-wrap gap-3">
+                         {adaptationStructures.map(s => (
+                           <button
+                             key={s}
+                             onClick={() => handleAdaptationScore('roots_s', s)}
+                             className={cn(
+                               "px-6 py-3 text-lg font-black rounded-xl border-2 transition-all",
+                               adaptationAnswers.roots_s === s 
+                                ? (s === "支持根" ? "bg-teal-500 border-teal-400 text-teal-950 shadow-lg" : "bg-red-500/20 border-red-500 text-red-200")
+                                : "bg-white/5 border-white/10 hover:border-teal-400/50"
+                             )}
+                           >
+                             {s}
+                           </button>
+                         ))}
+                       </div>
+                    </div>
+                    <div className="space-y-4">
+                       <p className="text-base font-bold text-teal-400 uppercase tracking-widest flex items-center gap-2">
+                         <div className="w-1.5 h-4 bg-teal-400 rounded-full" /> 步驟 2：對應生存優勢
+                       </p>
+                       <div className="grid gap-3">
+                         {adaptationAdvantages.map(a => (
+                           <button
+                             key={a}
+                             onClick={() => handleAdaptationScore('roots_a', a)}
+                             className={cn(
+                               "text-left px-6 py-4 text-base font-bold rounded-xl border-2 transition-all",
+                               adaptationAnswers.roots_a === a 
+                                 ? (a.includes("支撐") ? "bg-teal-500/30 border-teal-500 text-teal-50" : "bg-red-500/20 border-red-500 text-red-200")
+                                 : "bg-white/5 border-white/10 hover:border-teal-400/50"
+                             )}
+                           >
+                             {a}
+                           </button>
+                         ))}
+                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/10" />
+
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 px-6 py-2 rounded-full text-base font-black border border-blue-500/30 shadow-lg">
+                    <Waves size={20} /> 生存課題二：潮汐每日沖刷
+                  </div>
+                  <h4 className="text-3xl font-black text-white">任務：選擇對應的開拓構造與優勢</h4>
+                  
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                       <p className="text-base font-bold text-teal-400 uppercase tracking-widest flex items-center gap-2">
+                         <div className="w-1.5 h-4 bg-teal-400 rounded-full" /> 步驟 1：選擇對應構造
+                       </p>
+                       <div className="flex flex-wrap gap-3">
+                         {adaptationStructures.map(s => (
+                           <button
+                             key={s}
+                             onClick={() => handleAdaptationScore('seeds_s', s)}
+                             className={cn(
+                               "px-6 py-3 text-lg font-black rounded-xl border-2 transition-all",
+                               adaptationAnswers.seeds_s === s 
+                                 ? (s === "胎生苗" ? "bg-teal-500 border-teal-400 text-teal-950 shadow-lg" : "bg-red-500/20 border-red-500 text-red-200")
+                                 : "bg-white/5 border-white/10 hover:border-teal-400/50"
+                             )}
+                           >
+                             {s}
+                           </button>
+                         ))}
+                       </div>
+                    </div>
+                    <div className="space-y-4">
+                       <p className="text-base font-bold text-teal-400 uppercase tracking-widest flex items-center gap-2">
+                         <div className="w-1.5 h-4 bg-teal-400 rounded-full" /> 步驟 2：對應生存優勢
+                       </p>
+                       <div className="grid gap-3">
+                         {adaptationAdvantages.map(a => (
+                           <button
+                             key={a}
+                             onClick={() => handleAdaptationScore('seeds_a', a)}
+                             className={cn(
+                               "text-left px-6 py-4 text-base font-bold rounded-xl border-2 transition-all",
+                               adaptationAnswers.seeds_a === a 
+                                 ? (a.includes("潮水") ? "bg-teal-500/30 border-teal-500 text-teal-50" : "bg-red-500/20 border-red-500 text-red-200")
+                                 : "bg-white/5 border-white/10 hover:border-teal-400/50"
+                             )}
+                           >
+                             {a}
+                           </button>
+                         ))}
+                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {isAdaptationCorrect && (
+                   <motion.div 
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     className="mt-8 p-8 bg-teal-500/20 rounded-3xl text-center border-2 border-teal-500/50 shadow-2xl"
+                   >
+                     <p className="text-teal-300 font-black text-2xl flex items-center justify-center gap-3">
+                       <Trophy size={32} /> 適應成功：水筆仔已成功紮根立足！
+                     </p>
+                   </motion.div>
+                )}
+             </div>
+           </div>
+        </div>
+
+        {/* Section 4: Food Chain Mission - Standalone Block */}
+        <div className="bg-teal-900 text-white p-12 rounded-3xl border border-teal-800 shadow-2xl overflow-hidden relative">
+           <div className="text-center mb-12">
+             <h3 className="text-3xl font-black text-teal-100 mb-4 flex items-center justify-center gap-3">
+               <Zap className="text-teal-400" /> 重建紅樹林食物鏈
+             </h3>
+             <p className="text-teal-200/60 text-lg font-medium">請將生物名稱點選至正確的營養層級位置</p>
+           </div>
+
+           <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-16">
+              {['1', '2', '3'].map((pos, idx) => (
+                <React.Fragment key={pos}>
+                  <div className="flex flex-col items-center gap-4 group">
+                    <div className="bg-white/10 w-48 h-24 rounded-3xl border-2 border-dashed border-teal-400/50 flex items-center justify-center text-xl font-black text-teal-200 shadow-inner group-hover:border-teal-400 transition-all">
+                      {placedChain[pos] || `層級 ${pos}`}
+                    </div>
+                    <div className="bg-teal-800 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest text-teal-400 border border-teal-700">
+                      {pos === '1' ? '基礎生產者 (碎屑)' : pos === '2' ? '初級消費者' : '次級消費者'}
+                    </div>
+                  </div>
+                  {idx < 2 && (
+                    <div className="flex items-center justify-center">
+                      <ArrowRight className="hidden md:block text-teal-500/50" size={32} />
+                      <ArrowDown className="block md:hidden text-teal-500/50" size={32} />
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {['有機碎屑', '弧邊招潮蟹', '彈塗魚'].map(creature => (
+                <div key={creature} className="bg-white/5 p-6 rounded-3xl border border-white/5 flex flex-col items-center gap-6 hover:bg-white/10 transition-all hover:scale-105">
+                  <span className="text-xl font-black text-teal-100">{creature}</span>
+                  <div className="flex gap-2 w-full">
+                    {['1', '2', '3'].map(p => (
+                      <button
+                        key={p}
+                        onClick={() => handlePlaceInChain(creature, p)}
+                        className={cn(
+                          "flex-1 py-3 rounded-xl text-sm font-black transition-all border",
+                          placedChain[p] === creature 
+                            ? "bg-teal-400 border-teal-400 text-teal-950 scale-110 shadow-lg ring-4 ring-teal-400/30" 
+                            : "bg-white/10 border-white/20 hover:bg-white/20 hover:border-teal-400/50 text-white"
+                        )}
+                      >
+                        P{p}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+           </div>
         </div>
       </div>
 
@@ -3324,7 +3635,43 @@ function EstuarySection({ onComplete, onScore }: { onComplete: () => void, onSco
         </div>
       </div>
 
-      {isCorrectBlanks && isCorrectChain && isOrganismTaskCorrect && isQuizCorrect && <CompleteButton onClick={onComplete} />}
+      {/* YouTube Video Section for Estuary */}
+      <div className="bg-teal-50 p-8 rounded-3xl border border-teal-100 mt-12 overflow-hidden shadow-sm">
+        <h3 className="text-2xl font-black text-teal-800 mb-4 flex items-center gap-2">
+          <Info size={24} className="text-teal-500" /> 河口生態系：探索延伸
+        </h3>
+        <p className="text-teal-700 mb-8 font-medium">若你完成所有內容，可以回來觀看此段影片。</p>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <p className="text-teal-900 font-bold text-lg">紅樹林保衛河口生態系　過濾雜質淨化海洋</p>
+            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-teal-900/10">
+              <iframe 
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/PeqRCcmPzkQ" 
+                title="紅樹林保衛河口生態系　過濾雜質淨化海洋" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <p className="text-teal-900 font-bold text-lg">濁水溪北岸紅樹林危機 環團批影響生態、排水</p>
+            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-teal-900/10">
+              <iframe 
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/FJyAm3H56sY" 
+                title="濁水溪北岸紅樹林危機 環團批影響生態、排水" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {isCorrectBlanks && isCorrectChain && isOrganismTaskCorrect && isQuizCorrect && isAdaptationCorrect && <CompleteButton onClick={onComplete} />}
     </div>
   );
 }
@@ -3817,6 +4164,26 @@ function MarineSection({ onComplete, onScore }: { onComplete: () => void, onScor
                 )}
              </div>
            ))}
+        </div>
+      </div>
+
+      {/* YouTube Video Section for Marine */}
+      <div className="bg-blue-50 p-8 rounded-3xl border border-blue-100 mt-12 overflow-hidden shadow-sm">
+        <h3 className="text-2xl font-black text-blue-800 mb-4 flex items-center gap-2">
+          <Info size={24} className="text-blue-500" /> 海洋生態系：探索延伸
+        </h3>
+        <div className="mb-6">
+          <p className="text-blue-900 font-bold text-lg mb-1">一場碰撞促成了地球上數一數二壯觀的食物鏈...【深海殺手】短片精華版</p>
+          <p className="text-blue-700 font-medium">若你完成所有內容，可以回來觀看此段影片。</p>
+        </div>
+        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-blue-900/10">
+          <iframe 
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/0vi3NaMpuBM" 
+            title="一場碰撞促成了地球上數一數二壯觀的食物鏈...【深海殺手】短片精華版" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen
+          ></iframe>
         </div>
       </div>
 
