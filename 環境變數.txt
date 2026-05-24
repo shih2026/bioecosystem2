@@ -1,0 +1,14 @@
+🚀 生態系教育平台 - Vercel 部署與金鑰配置步驟指南
+無硬編碼任何 API 金鑰。請按照以下步驟完成您自己的平台部署：
+	1	登入 Vercel 官網，點選 Add New > Project。
+	2	匯入或連結您上傳此專案代碼的 GitHub 儲存庫（Repository）。
+	3	在部署設定頁面中，先不要點選 Deploy，或者可以先進行以下第二步的環境變數設定。
+在 Vercel 專案設定頁面的 Settings > Environment Variables（環境變數）中，新增以下 兩個 變數：
+	1	🔑 Gemini AI 評分金鑰
+	◦	Key (鍵名)：GEMINI_API_KEY (請注意沒有 VITE_ 前綴)
+	◦	Value (值)：請輸入您在 Google AI Studio 申請的 Gemini API 金鑰 (例如 AIzaSy...)。
+	◦	（用途：用於核心「總評量」部分中，透過後端 API 安全地呼叫 AI 老師，評分學生的簡答理由）
+	2	📊 Google Apps Script 積分上傳網址
+	◦	Key (鍵名)：VITE_GAS_DEPLOY_URL (請置入 VITE_ 前綴，以供 React 前端編譯時載入)
+	◦	Value (值)：請置入由您自封裝、發佈的 Google Apps Script 「網頁應用程式」網址 (例如 https://script.google.com/macros/s/xxxx/exec)。
+	◦	（用途：用於收集並登記學生的「總積分」、「生物挑戰」及「生態系挑戰」排行數據至 Google 試算表）
