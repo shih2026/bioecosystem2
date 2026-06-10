@@ -79,14 +79,32 @@ export default function App() {
     isCorrect: boolean | number,
     componentAttempts?: number,
   ) => {
-    // For AI challenge, we allow updates if score is higher
-    if (scoredIds.has(questionId) && questionId !== "ai_challenge") return;
+    // For AI challenge and arcade games, we allow updates
+    if (
+      scoredIds.has(questionId) &&
+      questionId !== "ai_challenge" &&
+      questionId !== "creature_challenge" &&
+      questionId !== "ecosystem_challenge"
+    )
+      return;
 
     if (typeof isCorrect === "number") {
       if (questionId === "ai_challenge") {
         const currentBest = bestScores[questionId] || 0;
         if (isCorrect > currentBest) {
           setExplorerScore((prev) => prev - currentBest + isCorrect);
+          setBestScores((prev) => ({ ...prev, [questionId]: isCorrect }));
+        }
+        setScoredIds((prev) => new Set(prev).add(questionId));
+        return;
+      }
+
+      if (
+        questionId === "creature_challenge" ||
+        questionId === "ecosystem_challenge"
+      ) {
+        const currentBest = bestScores[questionId] || 0;
+        if (isCorrect > currentBest) {
           setBestScores((prev) => ({ ...prev, [questionId]: isCorrect }));
         }
         setScoredIds((prev) => new Set(prev).add(questionId));
@@ -3587,10 +3605,13 @@ function CreaturesSection({
           <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 text-rose-500">
             <CheckCircle2 size={40} />
           </div>
-          <h3 className="text-2xl font-bold mb-4">太棒了！</h3>
-          <p className="text-slate-600 mb-8">
+          <h3 className="text-2xl font-bold mb-2">太棒了！</h3>
+          <p className="text-slate-600 mb-6">
             你已經成功掌握了陸域生態系中代表生物的居住地。
           </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-full font-black text-sm mb-8">
+            <CheckCircle2 size={16} /> 代表生物配對成功！已計分 ✓ (+200 探險積分)
+          </div>
           <CompleteButton onClick={onComplete} isComplete={true} incompleteTasks={[]} />
         </div>
       </div>
@@ -3825,10 +3846,13 @@ function WaterCreaturesSection({
           <div className="w-20 h-20 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6 text-cyan-500">
             <CheckCircle2 size={40} />
           </div>
-          <h3 className="text-2xl font-bold mb-4">做得好！</h3>
-          <p className="text-slate-600 mb-8">
+          <h3 className="text-2xl font-bold mb-2">做得好！</h3>
+          <p className="text-slate-600 mb-6">
             你已經成功將這些水域生物歸位到更精確的生態系了。
           </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 border border-cyan-200 text-cyan-700 rounded-full font-black text-sm mb-8">
+            <CheckCircle2 size={16} /> 水域生物配對成功！已計分 ✓ (+200 探險積分)
+          </div>
           <CompleteButton onClick={onComplete} isComplete={true} incompleteTasks={[]} />
         </div>
       </div>
